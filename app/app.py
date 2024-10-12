@@ -4,10 +4,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 
+import os
+
 app = Flask(__name__)
-engine = create_engine(
-    "mysql+pymysql://root:p%40ssw0rd1@mysqldb/test_mysql?charset=utf8mb4"
-)
+engine = create_engine(os.getenv("DATABASE_URI"))
+app.config["PORT"] = os.getenv("PORT")
 
 
 @app.route("/")
