@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>演習用のHTML</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='try_css.css')}}">
+        <script src={{ url_for("static", filename="try_js.js") }}></script>
+        <script src={{ url_for("static", filename="plotly-2.32.0.min.js") }}></script>
+    </head>
+    <body>
+        <div id="try_graph" style="width:600px;height:250px;margin: auto;"></div>
+        <script>
+            var trace = {
+                x: [1, 2, 3, 4],
+                y: [10, 15, 13, 17],
+                mode: 'lines+markers',
+                type: 'scatter',
+                text: ['A', 'B', 'C', 'D']
+                
+            };
+            var data = [trace];
+            Plotly.newPlot('try_graph', data);
+        </script>
+        <p>
+            テーブル<br>
+            <table id="table_id">
+                <tr>
+                <th>見出し1</th>
+                <th>見出し2</th>
+                <th>見出し3</th>
+                </tr>
+                <tr>
+                <td>内容1</td>
+                <td>内容2</td>
+                <td>内容3</td>
+            </table>            
+            <form method="POST" action="http://127.0.0.1:5000/show_data">
+                <input type="text" name="text" value="テキスト"><br>
+                <input type="button" name="button" value="ボタン" onclick="change_table();"><br>
+                <input type="checkbox" name="check" value="チェックボックス1">チェックボックス1
+                <input type="checkbox" name="check" value="チェックボックス2">チェックボックス2<br>
+                <input type="radio" name="radio" value="ラジオボタン1">ラジオボタン1
+                <input type="radio" name="radio" value="ラジオボタン2">ラジオボタン2<br>
+                <select name="select" id="select_id" onchange="change_by_select();">
+                    <option value="">なし</option>
+                    <option value="red">赤</option>
+                    <option value="blue">青</option>
+                </select>                            
+                <input type="submit" name"="submit" value="送信">
+            </form>
+            <a href="https://www.google.co.jp">グーグルへのリンク</a>
+        </p>       
+    </body>
+</html>
