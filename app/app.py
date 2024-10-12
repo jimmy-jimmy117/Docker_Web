@@ -3,10 +3,21 @@ from mysql_model import Person
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
+import logging
+import traceback
 
 import os
 
 app = Flask(__name__)
+app.logger.setLevel(logging.DEBUG)
+log_handler = logging.FileHandler(os.getenv("LOG_FILE"))
+formatter = logging.Formatter(
+    "%(asctime)s - %(levelname)s - %(filename)s - %(name)s - %(funcName)s - %(message)s"
+)
+log_handler.setFormatter(formatter)
+log_handler.setLevel(logging.DEBUG)
+app.logger.addHandler(log_handler)
+log = app.logger
 engine = create_engine(os.getenv("DATABASE_URI"))
 app.config["PORT"] = os.getenv("PORT")
 
@@ -66,9 +77,13 @@ def person_search():
 
 @app.route("/person_result")
 def person_result():
-    search_size = request.args.get("search_size")
-    with Session(engine) as session:
-        persons = session.query(Person).filter(Person.size > search_size)
+    try:
+        search_size = request.args.get("search_size")
+        search_size = int(search_size)
+        with Session(engine) as session:
+            persons = session.query(Person).filter(Person.size > search_size)
+    except Exception:
+        log.error(traceback.format_exec())
     return render_template(
         "./person_result.html", persons=persons, search_size=search_size
     )
