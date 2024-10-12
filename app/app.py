@@ -19,7 +19,7 @@ log_handler.setLevel(logging.DEBUG)
 app.logger.addHandler(log_handler)
 log = app.logger
 engine = create_engine(os.getenv("DATABASE_URI"))
-app.config["PORT"] = os.getenv("PORT")
+app.config["PORT"] = os.getenv("DEFAULT_PORT")
 
 
 @app.route("/")
